@@ -5,14 +5,16 @@ const { func } = require("prop-types");
 const https = require("https");
 const { url } = require("inspector");
 const { write } = require("fs");
+require("dotenv/config");
 
 const app =express();
 
 app.use(express.static("public"));  //to acces all the static files 
 app.use(bodyParser.urlencoded({extended:true}));
+app.set('view engine', 'ejs');
 
 app.get("/",function(req,res){
-  res.sendFile(__dirname+"/signup.html");
+  res.render("signup");
 });
 
 app.post("/",function(req,res){
@@ -43,10 +45,10 @@ const jsonData = JSON.stringify(data);
  const request = https.request(url,options,function(response){
 
 if(response.statusCode===200){
-  res.sendFile(__dirname+"/success.html");
+  res.render("success");
 }
 else{
-  res.sendFile(__dirname+"/failure.html");
+  res.render("failure");
 }
 
    response.on("data" ,function(data){
@@ -67,9 +69,3 @@ app.post("/failure" ,function(req,res){
 app.listen(process.env.PORT || 8000 ,function(){
   console.log("server 8000 OK ");
 });
-
-
-//API key
-//cf9fd9a14e7a2a96fec6bc1e001b645a-us6
-//audience id
-//
